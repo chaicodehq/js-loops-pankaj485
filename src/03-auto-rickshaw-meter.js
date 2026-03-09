@@ -33,4 +33,38 @@
  */
 export function calculateAutoFare(distance, waitingMinutes = 0) {
   // Your code here
+
+  if (
+    !distance ||
+    typeof distance != "number" ||
+    distance < 0 ||
+    typeof waitingMinutes !== "number" ||
+    !Number.isInteger(waitingMinutes) ||
+    waitingMinutes < 0
+  ) {
+    return -1;
+  }
+
+  const ceiledDistance = Math.ceil(distance);
+  const ceiledWaitingMinutes = Math.ceil(waitingMinutes / 2);
+
+  const prices = {
+    byDistance: 0,
+    byWaitingTime: 0,
+  };
+
+  // calculate pricing by distance:
+  if (ceiledDistance < 2) {
+    prices.byDistance = 30;
+  } else if (ceiledDistance >= 2 && ceiledDistance <= 5) {
+    prices.byDistance = 30 + 15 * (ceiledDistance - 1);
+  } else if (ceiledDistance > 5) {
+    prices.byDistance = 90 + 10 * (ceiledDistance - 5);
+  }
+
+  prices.byWaitingTime = ceiledWaitingMinutes * 5;
+
+  return prices.byDistance + prices.byWaitingTime;
 }
+
+console.log(calculateAutoFare(5.1));
