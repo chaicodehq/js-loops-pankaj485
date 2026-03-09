@@ -28,4 +28,33 @@
  */
 export function chaiTapriRevenue(customers) {
   // Your code here
+  const data = {
+    totalChai: 0,
+    totalRevenue: 0,
+  };
+
+  if (
+    !customers ||
+    typeof customers !== "number" ||
+    !Number.isInteger(customers) ||
+    customers < 1
+  ) {
+    return data;
+  }
+
+  let customerIndex = 1;
+
+  while (customerIndex <= customers) {
+    if (customerIndex % 3 === 0) {
+      data.totalRevenue += 15;
+    } else {
+      data.totalRevenue += 10;
+    }
+
+    customerIndex++;
+  }
+
+  data.totalChai = customers;
+
+  return data;
 }
