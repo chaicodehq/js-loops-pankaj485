@@ -39,4 +39,55 @@
  */
 export function diwaliLightsPlan(lightStrings, budget) {
   // Your code here
+  const data = { selected: [], totalLength: 0, totalCost: 0 };
+
+  if (
+    !Array.isArray(lightStrings) ||
+    typeof budget !== "number" ||
+    !Number.isInteger(budget) ||
+    budget < 0
+  ) {
+    return data;
+  }
+
+  const pricePerUnit = {
+    golden: 50,
+    multicolor: 40,
+    white: 30,
+    other: 35,
+  };
+
+  const strings = lightStrings.map((_) => ({
+    ..._,
+    cost: pricePerUnit[_.color]
+      ? pricePerUnit[_.color] * _.length
+      : pricePerUnit["other"] * _.length,
+  }));
+
+  strings.forEach((string) => {
+    const totalCost = strings.reduce((prev, { cost }) => prev + cost, 0);
+    if (totalCost > budget) {
+      strings.pop();
+    }
+  });
+
+  // update data:
+  data.selected = strings;
+  data.totalCost = strings.reduce((prev, { cost }) => prev + cost, 0);
+  data.totalLength = strings.reduce((prev, { length }) => prev + length, 0);
+
+  return data;
 }
+
+const a = diwaliLightsPlan(
+  [
+    { color: "white", length: 5 },
+    // { color: "white", length: 10 },
+    // { color: "golden", length: 5 },
+    // { color: "white", length: 10 },
+    // { color: "multicolor", length: 3 },
+  ],
+  400,
+);
+
+console.log(a);
