@@ -31,4 +31,35 @@
  */
 export function sabziMandiBill(shoppingList, priceList) {
   // Your code here
+
+  const maxPrice = 80;
+
+  if (
+    !shoppingList ||
+    !Array.isArray(shoppingList) ||
+    !priceList ||
+    typeof priceList !== "object"
+  ) {
+    return [];
+  }
+
+  const validShoppingList = shoppingList.filter(
+    (_) => Object.hasOwn(priceList, _.name) && priceList[_.name] <= maxPrice,
+  );
+
+  validShoppingList.forEach(({ name, qty }) => {
+    const pricePerUnit = priceList[name];
+    const total = qty * pricePerUnit;
+    return total;
+  });
+
+  const items = validShoppingList.map(({ name, qty }) => ({
+    name: name,
+    qty: qty,
+    cost: qty * priceList[name],
+  }));
+
+  const totalBill = items.reduce((prev, { cost }) => prev + cost, 0);
+
+  return { items, totalBill };
 }
