@@ -35,4 +35,31 @@
  */
 export function buildPlaylist(songs, maxDuration) {
   // Your code here
+  const data = { count: 0, totalDuration: 0 };
+
+  if (
+    !Array.isArray(songs) ||
+    typeof maxDuration !== "number" ||
+    !Number.isInteger(maxDuration) ||
+    maxDuration <= 0
+  ) {
+    return data;
+  }
+
+  const validSongs = songs.filter(
+    (_) => typeof _ === "number" && Number.isInteger(_) && _ > 0,
+  );
+
+  for (const song of validSongs) {
+    if (data.totalDuration + song <= maxDuration) {
+      data.count += 1;
+      data.totalDuration += song;
+    } else {
+      break;
+    }
+  }
+
+  return data;
 }
+
+// console.log(buildPlaylist([500, 200, 100], 400));
